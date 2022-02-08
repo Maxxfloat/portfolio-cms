@@ -13,7 +13,7 @@ interface CardType {
 export const BlogCard: FC<CardType> = ({ category, title, explain, color }) => {
   return (
     <div
-      className="m-5 shadow-gray-500 shadow-md p-5 bg-gray-100 border-t-4 "
+      className="my-5 mx-7 shadow-gray-400/50 shadow-md p-5 bg-gray-50 border-t-4 "
       style={{ borderColor: color }}
     >
       <div>{category}</div>
@@ -32,7 +32,7 @@ export const BlogColumn: FC<{ array: CardType[] }> = ({ array }) => (
 );
 
 interface BlogType {
-  blogArray: CardType[];
+  blogArray?: CardType[];
 }
 
 const Blog: FC<BlogType> = ({ blogArray }) => {
@@ -52,7 +52,7 @@ const Blog: FC<BlogType> = ({ blogArray }) => {
 
   return (
     <div className="relative flex items-center flex-col">
-      <div className="absolute text-[11rem] m- opacity-20 scale-y-50 -z-10 font-[elham] right-10 -top-32 md:-top-96">
+      <div className="absolute text-[11rem] md:text-[15rem] opacity-20 scale-y-50 -z-10 font-[elham] right-10 -top-32 md:-top-48">
         بلاگ‌ها
       </div>
       <div className="flex justify-center flex-col lg:flex-row">

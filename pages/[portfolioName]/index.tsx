@@ -1,8 +1,9 @@
-import React from "react";
+import React, { ReactElement, FC } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
+import { UserEntity } from "components/modules/types";
 import { ThemeContext } from "components/stateManager/context";
 import Headline from "components/page/PortfolioIndex/Headline";
 import { get } from "components/modules/remote";
@@ -11,6 +12,7 @@ import About from "components/page/PortfolioIndex/About";
 import Blog from "components/page/PortfolioIndex/Blog";
 import DataError from "components/DataError";
 import Contact from "components/page/PortfolioIndex/Contact";
+import Layout from "components/Layout";
 
 interface HeadlineType {
   headline: {
@@ -18,8 +20,8 @@ interface HeadlineType {
     headlineSupport: string;
   };
 }
-
-const UserPage: React.FC<{ data: any; portfolioName: string }> = ({ data }) => {
+// : FC<{ data: UserEntity }>
+const UserPage = ({ data }) => {
   const router = useRouter();
   const { darkMode, setDarkMode } = React.useContext(ThemeContext);
   console.log("res: ", data);
@@ -47,20 +49,22 @@ const UserPage: React.FC<{ data: any; portfolioName: string }> = ({ data }) => {
         </section>
         <section className="min-h-screen">
           <div className="relative mb-14 mr-2 md:mr-5">
-            <h1 className="mr-5 font-[yekanRe] text-4xl md:text-7xl font-bold">
-              {pageData.projects.title}
-            </h1>
-            <p className="text-justify mx-8 font-[kara] mt-10 font-bold text-lg max-w-4xl whitespace-pre-line">
-              {pageData.projects.text}
-            </p>
-            <div className="my-5">
+            <div className="mb-52">
+              <h1 className="mr-5 font-[yekanRe] text-4xl md:text-7xl font-bold">
+                {pageData.projects.title}
+              </h1>
+              <p className="text-justify mx-4 font-[sahel] leading-8 mt-10 font-bold text-lg md:text-xl max-w-4xl whitespace-pre-line">
+                {pageData.projects.text}
+              </p>
+            </div>
+            <div className="my-5 mt-10">
               <Link href={`/${data.userName}/work`}>
                 <a className="border-2 mr-8  font-[yekanRe] border-black px-8 py-1 text-center text-lg font-bold">
                   پروژه های بیشتر!!
                 </a>
               </Link>
             </div>
-            <div className="absolute opacity-[15%] -z-10 text-[10rem] md:text-[13rem] lg:text-[16rem] lg:-top-24 lg:right-96 xl:text-[20rem] font-[elham] top-36 right-14">
+            <div className="absolute opacity-[15%] -z-10 text-[10rem] md:text-[13rem] lg:text-[16rem] lg:top-32 lg:right-96 xl:text-[20rem] font-[elham] top-80 right-14">
               پروژه‌ها
             </div>
           </div>
@@ -75,12 +79,12 @@ const UserPage: React.FC<{ data: any; portfolioName: string }> = ({ data }) => {
         </section>
         <section>
           <div className="my-32">
-            <Blog blogArray={data.blogs} />
+            {data.blogs && <Blog blogArray={data.blogs} />}
           </div>
         </section>
-        {/* <section className="min-h-screen">
+        <section className="min-h-screen">
           <Contact />
-        </section> */}
+        </section>
       </main>
     </div>
   );
@@ -106,5 +110,9 @@ export const getStaticPaths: GetStaticPaths =
   async () => {
     return { paths: [], fallback: "blocking" };
   };
+
+UserPage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
 
 export default UserPage;
