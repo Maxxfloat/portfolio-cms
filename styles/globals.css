@@ -1,4 +1,35 @@
-html,
+@tailwind base;
+@tailwind components;
+
+@font-face {
+  font-family: "sahel";
+  src: url("../assets/Sahel.woff2");
+}
+@font-face {
+  font-family: "yekanRe";
+  src: url("../assets/yekan-regular.woff") format("woff");
+}
+@font-face {
+  font-family: "kara";
+  src: url("../assets/SGKara-Regular.ttf") format("woff");
+}
+@font-face {
+  font-family: "elham";
+  src: url("../assets/Far.Elham.ttf");
+}
+@font-face {
+  font-family: "league";
+  src: url("https://fonts.googleapis.com/css2?family=League+Script&display=swap");
+}
+
+.fthis:hover > a {
+  width: 100%;
+  height: 100%;
+}
+.fthis:hover > div {
+  background: none;
+}
+/* html,
 body {
   padding: 0;
   margin: 0;
@@ -13,4 +44,6 @@ a {
 
 * {
   box-sizing: border-box;
-}
+} */
+
+@tailwind utilities;
