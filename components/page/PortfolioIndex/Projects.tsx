@@ -25,7 +25,7 @@ const Projects = ({ col }) => {
           <div
             key={index}
             className={`w-1/3 h-80 relative xl:w-1/5 ${
-              index > 8 && "hidden lg:block"
+              index > 8 && "hidden xl:block"
             }`}
           >
             <div

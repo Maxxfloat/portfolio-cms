@@ -1,4 +1,4 @@
-import React, { ReactElement, FC } from "react";
+import React, { ReactElement, FC, useContext } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -98,7 +98,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       userName: portfolioName,
     },
   };
-
   const data = await get("/user", param);
   if (data) return { props: { data } };
   return { props: {} };

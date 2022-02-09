@@ -5,8 +5,9 @@ const Contact = () => {
   return (
     <div className="">
       <div className="text-4xl font-[yekanRe] mb-10 mr-4 font-bold">
-        حرفی، سخنی ...
+        حرفی؟ سخنی؟
       </div>
+      <div></div>
       <form
         onSubmit={handleSubmit((data) => console.log(data))}
         className="mx-5 space-y-4 flex font-[sahel] flex-col text-lg items-center md:w-1/2"
