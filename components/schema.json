@@ -1,0 +1,85 @@
+{
+  "kind": "collectionType",
+  "collectionName": "portfolios",
+  "info": {
+    "singularName": "portfolio",
+    "pluralName": "portfolios",
+    "displayName": "portfolio",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "about_page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::about.about"
+    },
+    "project_page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::project-page.project-page"
+    },
+    "portfolioName": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "aboutSection": {
+      "type": "component",
+      "repeatable": false,
+      "component": "headline-and-text.portfolio-sections",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "projectSection": {
+      "type": "component",
+      "repeatable": false,
+      "component": "headline-and-text.portfolio-sections",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "contactSection": {
+      "type": "component",
+      "repeatable": false,
+      "component": "headline-and-text.portfolio-sections",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "headline": {
+      "type": "component",
+      "repeatable": false,
+      "required": true,
+      "component": "headline-and-text.headline-and-headline-support",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "contact": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::contact.contact"
+    }
+  }
+}

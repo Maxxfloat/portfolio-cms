@@ -16,7 +16,9 @@ export const get = async (url: string, options?: Object) => {
   try {
     const _url = config.serverUrl + url;
     const res = await axios.get(_url, options);
-    const resData = qs.parse(res.data[0]);
+    console.log("OP: ", options);
+    // console.log("resss: ", res);
+    const resData = qs.parse(res.data.data[0].attributes);
     console.log("resData: ", resData);
     return resData;
   } catch {

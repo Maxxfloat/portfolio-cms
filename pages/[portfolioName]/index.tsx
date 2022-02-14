@@ -1,117 +1,93 @@
-import React, { ReactElement, FC, useContext } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { GetStaticPaths, GetStaticProps } from "next";
-import Link from "next/link";
-import { UserEntity } from "components/modules/types";
-import { ThemeContext } from "components/stateManager/context";
-import Headline from "components/page/PortfolioIndex/Headline";
+import { GetServerSideProps } from "next";
+import Headline from "components/PortfolioIndex/Headline";
 import { get } from "components/modules/remote";
-import Projects from "components/page/PortfolioIndex/Projects";
-import About from "components/page/PortfolioIndex/About";
-import Blog from "components/page/PortfolioIndex/Blog";
+import About from "components/PortfolioIndex/About";
+import Blog from "components/PortfolioIndex/Blog";
 import DataError from "components/DataError";
-import Contact from "components/page/PortfolioIndex/Contact";
-import Layout from "components/Layout";
+import Contact from "components/PortfolioIndex/Contact";
+import ThemeToggleBtn from "components/themeToggleBtn";
 
-interface HeadlineType {
-  headline: {
-    headlineText: string;
-    headlineSupport: string;
-  };
-}
-// : FC<{ data: UserEntity }>
-const UserPage = ({ data }) => {
-  const router = useRouter();
-  const { darkMode, setDarkMode } = React.useContext(ThemeContext);
+const UserPage = ({ data, message }) => {
+  const [darkMode, setDarkMode] = useState(false);
+  // const [sidebarOpen, setSidebarOpen] = useState(false);
   console.log("res: ", data);
+  console.log("mes: ", message);
 
-  const pageData = data.pages.main;
+  if (data === undefined) {
+    return <DataError />;
+  }
 
-  if (!data) return <DataError />;
   return (
-    <div>
-      <Head>
-        <title>{data.userName}</title>
-      </Head>
-      <main>
-        <section className="flex min-h-screen">
-          <div className="mr-6 md:mr-10 flex flex-col justify-center">
-            <div className="mb-14">
-              <Headline {...pageData.headline} />
-            </div>
-            <Link href={`/${data.userName}/contact`}>
-              <a className="border-2 font-[yekanRe] mb-20 border-black px-2 text-center mt-5 w-48 text-xl font-bold leading-loose ">
-                تماس با من
-              </a>
-            </Link>
-          </div>
-        </section>
-        <section className="min-h-screen">
-          <div className="relative mb-14 mr-2 md:mr-5">
-            <div className="mb-52">
-              <h1 className="mr-5 font-[yekanRe] text-4xl md:text-7xl font-bold">
-                {pageData.projects.title}
-              </h1>
-              <p className="text-justify mx-4 font-[sahel] leading-8 mt-10 font-bold text-lg md:text-xl max-w-4xl whitespace-pre-line">
-                {pageData.projects.text}
-              </p>
-            </div>
-            <div className="my-5 mt-10">
-              <Link href={`/${data.userName}/work`}>
-                <a className="border-2 mr-8  font-[yekanRe] border-black px-8 py-1 text-center text-lg font-bold">
-                  پروژه های بیشتر!!
-                </a>
-              </Link>
-            </div>
-            <div className="absolute opacity-[15%] -z-10 text-[10rem] md:text-[13rem] lg:text-[16rem] lg:top-32 lg:right-96 xl:text-[20rem] font-[elham] top-80 right-14">
-              پروژه‌ها
-            </div>
-          </div>
-          <div className="w-full">
-            <Projects col={1} />
-          </div>
-        </section>
-        <section className="">
-          <div className="mt-60">
-            <About header={pageData.about.title} text={pageData.about.text} />
-          </div>
-        </section>
-        <section>
-          <div className="my-32">
-            {data.blogs && <Blog blogArray={data.blogs} />}
-          </div>
-        </section>
-        <section className="min-h-screen">
-          <Contact />
-        </section>
-      </main>
+    <div className={`${darkMode && "dark"} flex `} style={{ direction: "rtl" }}>
+      {/* <button
+        className="fixed left-4 top-4 z-10 md:hidden"
+        onClick={() => setSidebarOpen((state) => !state)}
+      ></button> */}
+      {/* <Sidebar {...{ darkMode, setDarkMode }} /> */}
+      <ThemeToggleBtn {...{ darkMode, setDarkMode }} />
+      <div className="min-h-screen w-full dark:bg-[#1d1d1d] bg-gray-100 relative z-0 transition-all duration-150 dark:text-gray-50">
+        <div>
+          <Head>
+            <title>{data.userName}</title>
+          </Head>
+          <main>
+            <section className="flex min-h-screen">
+              <div className="mr-6 md:mr-10 flex flex-col justify-center">
+                <Headline {...data.headline} headlineBtn={data.headlineBtn} />
+              </div>
+            </section>
+            {data.aboutSection && (
+              <section className="min-h-screen md:h-screen my-5 md:m-0">
+                <About
+                  header={data.aboutSection.title}
+                  text={data.aboutSection.text}
+                />
+              </section>
+            )}
+            {data.blogSection && (
+              <section>
+                <div className="my-32">
+                  {data.blogs && <Blog blogArray={data.blogs} />}
+                </div>
+              </section>
+            )}
+            {data.contactSection && (
+              <section className="min-h-screen md:h-screen ">
+                <Contact
+                  title={data.contactSection.title}
+                  text={data.contactSection.text}
+                />
+              </section>
+            )}
+          </main>
+        </div>
+      </div>
     </div>
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+// UserPage.getLayout = (page: ReactElement) => {
+//   return <Layout>{page}</Layout>;
+// };
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const portfolioName = params.portfolioName;
   console.log("port: ", portfolioName);
   const param = {
     params: {
-      userName: portfolioName,
+      populate: "*",
+      "filters[portfolioName][$eq]": portfolioName,
     },
   };
-  const data = await get("/user", param);
-  if (data) return { props: { data } };
-  return { props: {} };
-};
-export const getStaticPaths: GetStaticPaths =
-  // <{
-  //   portfolioName: string;
-  // }>
-  async () => {
-    return { paths: [], fallback: "blocking" };
-  };
-
-UserPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  const data = await get("/portfolios", param);
+  console.log("de: ", data);
+  if (data === undefined) {
+    return { notFound: true };
+  }
+  return { props: { data: data } };
 };
 
 export default UserPage;
