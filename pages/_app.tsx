@@ -5,6 +5,8 @@ import type { AppProps } from "next/app";
 import "../styles/globals.css";
 import "styles/animate.css";
 
+import Layout from "components/Layout/Layout";
+
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -18,9 +20,9 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    // <Layout>
-    <Component {...pageProps} />
-    // </Layout>
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
   );
   // return getLayout(<Component {...pageProps} />);
 }

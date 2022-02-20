@@ -4,10 +4,8 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
 interface Props {
-  id: number;
   title?: string;
   text?: string;
-  headlineBtn: boolean;
 }
 
 const Headline: React.FC<Props> = (props) => {
@@ -22,13 +20,13 @@ const Headline: React.FC<Props> = (props) => {
           <ReactMarkdown className="text-xl md:text-3xl lg:text-3xl xl:text-4xl mt-4 ">
             {props.text}
           </ReactMarkdown>
-          {props.headlineBtn && (
+          {/* {props.headlineBtn && (
             <Link href={`/${portfolioName}/contact`}>
               <a className="border-2 font-[yekanRe]  border-black dark:border-gray-300 px-2 text-center mt-10 w-48 text-xl font-bold leading-loose ">
                 تماس با من
               </a>
             </Link>
-          )}
+          )} */}
         </div>
       </div>
     );
